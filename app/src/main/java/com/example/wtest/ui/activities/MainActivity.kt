@@ -15,7 +15,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun getContentLayoutId() = R.layout.activity_main
 
     override fun onViewReady() {
-        viewModel.getZipCode()
+        fetchZipcodes()
         setupObservables()
     }
 
@@ -24,7 +24,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun handleZipcodeResult(showLoading: Boolean) {
-        Log.d("++", showLoading.toString())
+        Log.d("--", showLoading.toString())
         binding.grLoading.isVisible = !showLoading
     }
 

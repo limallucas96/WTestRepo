@@ -12,10 +12,9 @@ import java.io.InputStreamReader
 
 class MainRepository(private val ws: WebService, private val db: AppDataBase) {
 
-    private val zipcodeDataSource = db.zipcodeDataSource()
-
     suspend fun getZipCode(): Boolean {
-        return if (db.zipcodeDataSource().getZipcodes().isNotEmpty()) {
+        val zipCodes = db.zipcodeDataSource().getZipcodes()
+        return if (zipCodes.isNotEmpty()) {
             Log.d("--", "not empty")
             true
         } else {
