@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -30,16 +32,61 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //Android
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+
+    //Kotlin
+    implementation "androidx.core:core-ktx:$coreKotlinVersion"
+
+    //Test
+    testImplementation "junit:junit:$junitVerson"
+    androidTestImplementation "androidx.test.ext:junit:$junitExtVerson"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$expressoVersion"
+
+    //Network
+    implementation "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+    implementation "com.squareup.retrofit2:retrofit-mock:$retrofit"
+    implementation "com.squareup.retrofit2:converter-jackson:$retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion"
+
+    //Koin
+    implementation "org.koin:koin-android:$koinVersion"
+
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+
+    // Paging 3
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
+
+    //Room Database
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
+    //Mockito
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
+    testImplementation "org.mockito:mockito-inline:$mockitoVersion"
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.1'
+    implementation 'com.opencsv:opencsv:4.6'
+
 }
