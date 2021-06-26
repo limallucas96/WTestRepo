@@ -8,14 +8,31 @@
         android:layout_height="match_parent"
         tools:context=".ui.activities.MainActivity">
 
-        <TextView
+        <ProgressBar
+            android:id="@+id/pbLoading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLoading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Loading zipcodes. Please wait."
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pbLoading" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/grLoading"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:constraint_referenced_ids="pbLoading, tvLoading" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
