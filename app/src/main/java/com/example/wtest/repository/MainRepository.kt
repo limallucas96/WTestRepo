@@ -1,12 +1,9 @@
 package com.example.wtest.repository
 
 import android.util.Log
-import androidx.lifecycle.viewModelScope
-import androidx.room.withTransaction
 import com.example.wtest.data.database.AppDataBase
 import com.example.wtest.data.entities.Zipcode
 import com.example.wtest.data.webservice.WebService
-import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -37,6 +34,8 @@ class MainRepository(private val ws: WebService, private val db: AppDataBase) {
             } ?: false
         }
     }
+
+    suspend fun getZipcodes() = db.zipcodeDataSource().getZipcodes()
 
     private fun List<String>.toZipcode(): Zipcode {
         return Zipcode(

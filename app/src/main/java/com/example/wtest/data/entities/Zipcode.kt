@@ -26,5 +26,7 @@ data class Zipcode(
     val client: String = "",
     val zipcode: String = "",
     val extZipcode: String = "",
-    val desZipcode: String = "",
-)
+    val desZipcode: String = ""
+) {
+    override fun toString() = "$zipcode-$extZipcode $locationName"
+}
