@@ -1,15 +1,18 @@
 package com.example.wtest.ui.activities
 
 import android.util.Log
+import android.view.Menu
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
-import com.example.wtest.ui.viewmodels.MainActivityViewModel
 import com.example.wtest.R
-import com.example.wtest.ui.bases.BaseActivity
 import com.example.wtest.databinding.ActivityMainBinding
 import com.example.wtest.ui.adapters.ListLoadStateAdapter
 import com.example.wtest.ui.adapters.ZipcodeListAdapter
+import com.example.wtest.ui.bases.BaseActivity
+import com.example.wtest.ui.viewmodels.MainActivityViewModel
+import com.example.wtest.utils.onQueryTextSubmit
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -18,6 +21,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override val viewModel by inject<MainActivityViewModel>()
     override fun getContentLayoutId() = R.layout.activity_main
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as? SearchView
+
+        searchView?.onQueryTextSubmit { query ->
+            getPaginatedResults(query)
+            searchView.clearFocus()
+        }
+
+        return true
+    }
 
     override fun onViewReady() {
         fetchZipcodes()
@@ -32,8 +49,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private fun getPaginatedResults() {
-        viewModel.getPagedResult().observe(this@MainActivity, {
+    private fun getPaginatedResults(query: String = "") {
+        viewModel.getPagedResult(query).observe(this@MainActivity, {
             zipcodeAdapter.submitData(lifecycle, it)
         })
     }
@@ -66,16 +83,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
+    private fun showEmptyState() {
+        binding.run {
+            grLoading.isVisible = false
+            rvRecyclerView.isVisible = false
+            tvEmptyState.isVisible = true
+        }
+    }
+
     private fun handleEmptyList() {
-       if(zipcodeAdapter.itemCount > 1) {
-           Toast.makeText(this, "End of results", Toast.LENGTH_SHORT).show()
-       } else {
-           binding.run {
-               grLoading.isVisible = false
-               rvRecyclerView.isVisible = false
-               tvEmptyState.isVisible = true
-           }
-       }
+        when {
+            zipcodeAdapter.itemCount > 1 -> {
+                Toast.makeText(this, "End of results", Toast.LENGTH_SHORT).show()
+            }
+            viewModel.zipCodeLiveData.value == null -> {
+                showLoading()
+            }
+            else -> {
+                showEmptyState()
+            }
+        }
     }
 
     private fun fetchZipcodes() {

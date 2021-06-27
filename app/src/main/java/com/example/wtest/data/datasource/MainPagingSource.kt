@@ -8,7 +8,7 @@ import com.example.wtest.repository.MainRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
-class MainPagingSource(private val zipCode: String = "", private val repository: MainRepository) :
+class MainPagingSource(private val query: String, private val repository: MainRepository) :
     PagingSource<Int, Zipcode>() {
 
     private val result = mutableListOf<Zipcode>()
@@ -16,8 +16,14 @@ class MainPagingSource(private val zipCode: String = "", private val repository:
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Zipcode> {
 
         delay(3000)
-        if (result.isEmpty()) {
-            result.addAll(repository.getZipcodes().take(500))
+        if (query.isEmpty()) {
+            if (result.isEmpty()) {
+                result.addAll(repository.getZipcodes().take(500))
+            }
+        } else {
+              if(result.isEmpty()) {
+                  result.addAll(repository.getZipcodesLike(query))
+              }
         }
 
         val perPage = params.loadSize

@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
-import com.example.wtest.data.database.AppDataBase
 import com.example.wtest.data.datasource.MainPagingSource
 import com.example.wtest.repository.MainRepository
 import kotlinx.coroutines.launch
@@ -26,10 +25,10 @@ class MainActivityViewModel(private val mainRepository: MainRepository) : ViewMo
         }
     }
 
-    fun getPagedResult() =
+    fun getPagedResult(query: String) =
         Pager(
             PagingConfig(pageSize = PAGE_SIZE, initialLoadSize = PAGE_SIZE),
-            pagingSourceFactory = { MainPagingSource("", mainRepository) }
+            pagingSourceFactory = { MainPagingSource(query, mainRepository) }
         ).liveData
 
     companion object {

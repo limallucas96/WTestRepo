@@ -37,6 +37,8 @@ class MainRepository(private val ws: WebService, private val db: AppDataBase) {
 
     suspend fun getZipcodes() = db.zipcodeDataSource().getZipcodes()
 
+    suspend fun getZipcodesLike(query: String) = db.zipcodeDataSource().getZipcodesLike(query)
+
     private fun List<String>.toZipcode(): Zipcode {
         return Zipcode(
             districtCode = this.getOrNull(0).orEmpty(),

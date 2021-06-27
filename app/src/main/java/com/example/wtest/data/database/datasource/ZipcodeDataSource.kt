@@ -13,6 +13,9 @@ interface ZipcodeDataSource {
     suspend fun insertZipcode(zipCode: Zipcode)
 
     @Query("SELECT * FROM 'zipcode_entity'")
-    suspend fun getZipcodes() : List<Zipcode>
+    suspend fun getZipcodes(): List<Zipcode>
+
+    @Query("SELECT * FROM zipcode_entity WHERE locationName LIKE '%' || :query || '%' OR zipcode LIKE '%' || :query || '%' OR extZipcode LIKE '%' || :query || '%'")
+    suspend fun getZipcodesLike(query: String): List<Zipcode>
 
 }
