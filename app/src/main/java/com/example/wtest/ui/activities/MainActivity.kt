@@ -1,11 +1,11 @@
 package com.example.wtest.ui.activities
 
-import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.example.wtest.R
 import com.example.wtest.databinding.ActivityMainBinding
 import com.example.wtest.ui.adapters.ListLoadStateAdapter
@@ -25,12 +25,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
 
-        val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as? SearchView
-
-        searchView?.onQueryTextSubmit { query ->
-            getPaginatedResults(query)
-            searchView.clearFocus()
+        (menu?.findItem(R.id.action_search)?.actionView as? SearchView)?.let { searchView ->
+            searchView.onQueryTextSubmit { query ->
+                getPaginatedResults(query)
+                searchView.clearFocus()
+            }
         }
 
         return true
@@ -50,6 +49,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun getPaginatedResults(query: String = "") {
+        zipcodeAdapter.submitData(lifecycle, PagingData.empty())
         viewModel.getPagedResult(query).observe(this@MainActivity, {
             zipcodeAdapter.submitData(lifecycle, it)
         })
@@ -60,7 +60,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun handleZipcodeResult(didLoad: Boolean) {
-        Log.d("--", didLoad.toString())
         if (didLoad) {
             binding.rvRecyclerView.adapter = zipcodeAdapter.withLoadStateFooter(ListLoadStateAdapter())
             showRecyclerView()
@@ -93,7 +92,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun handleEmptyList() {
         when {
-            zipcodeAdapter.itemCount > 1 -> {
+            zipcodeAdapter.itemCount > 0 -> {
                 Toast.makeText(this, "End of results", Toast.LENGTH_SHORT).show()
             }
             viewModel.zipCodeLiveData.value == null -> {

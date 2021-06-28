@@ -1,9 +1,9 @@
 package com.example.wtest.repository
 
-import android.util.Log
 import com.example.wtest.data.database.AppDataBase
 import com.example.wtest.data.entities.Zipcode
 import com.example.wtest.data.webservice.WebService
+import com.example.wtest.utils.stripAccents
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -12,10 +12,10 @@ class MainRepository(private val ws: WebService, private val db: AppDataBase) {
     suspend fun getZipCode(): Boolean {
         val zipCodes = db.zipcodeDataSource().getZipcodes()
         return if (zipCodes.isNotEmpty()) {
-            Log.d("--", "not empty")
             true
         } else {
             ws.getZipCodes().body()?.byteStream()?.let { byteStream ->
+
                 val bufferReader = BufferedReader(InputStreamReader(byteStream)).use(BufferedReader::readText)
 
                 val iterator = bufferReader.lineSequence().iterator()
@@ -26,10 +26,8 @@ class MainRepository(private val ws: WebService, private val db: AppDataBase) {
                     val line = iterator.next()
                     val split = line.split(",")
                     val zipCode = split.toZipcode()
-                    Log.d("--", zipCode.toString())
                     db.zipcodeDataSource().insertZipcode(zipCode)
                 }
-                Log.d("--", "done")
                 true
             } ?: false
         }
@@ -57,7 +55,8 @@ class MainRepository(private val ws: WebService, private val db: AppDataBase) {
             client = this.getOrNull(13).orEmpty(),
             zipcode = this.getOrNull(14).orEmpty(),
             extZipcode = this.getOrNull(15).orEmpty(),
-            desZipcode = this.getOrNull(16).orEmpty()
+            desZipcode = this.getOrNull(16).orEmpty(),
+            locationNameNormalized = this.getOrNull(3).orEmpty().stripAccents()
         )
     }
 

@@ -1,12 +1,10 @@
 package com.example.wtest.data.datasource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.wtest.data.entities.Zipcode
 import com.example.wtest.repository.MainRepository
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 
 class MainPagingSource(private val query: String, private val repository: MainRepository) :
     PagingSource<Int, Zipcode>() {
@@ -15,15 +13,14 @@ class MainPagingSource(private val query: String, private val repository: MainRe
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Zipcode> {
 
-        delay(3000)
-        if (query.isEmpty()) {
-            if (result.isEmpty()) {
+        delay(1000) //Create UI delay so we can see the loading state in the bottom of recyclerview.
+
+        if(result.isEmpty()) {
+            if(query.isEmpty()) {
                 result.addAll(repository.getZipcodes().take(500))
+            } else {
+                result.addAll(repository.getZipcodesLike(query))
             }
-        } else {
-              if(result.isEmpty()) {
-                  result.addAll(repository.getZipcodesLike(query))
-              }
         }
 
         val perPage = params.loadSize
@@ -32,11 +29,6 @@ class MainPagingSource(private val query: String, private val repository: MainRe
 
         val data = if (toTake > result.size && params.key != null) listOf() else result.take(toTake).takeLast(perPage)
         val nextKey = if (data.isEmpty()) null else currentPage + 1
-
-        Log.d("--", "perPage: $perPage")
-        Log.d("--", "currentPage: $currentPage")
-        Log.d("--", "data size: ${data.size}")
-        Log.d("--", "nextKey: $nextKey")
 
         return LoadResult.Page(
             data = data,
