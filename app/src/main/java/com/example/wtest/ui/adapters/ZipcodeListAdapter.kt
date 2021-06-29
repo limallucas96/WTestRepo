@@ -2,6 +2,7 @@ package com.example.wtest.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,7 @@ class ZipcodeListAdapter() :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Zipcode) {
-            binding.tvZipcode.text = item.toString()
+            binding.tvZipcode.text = HtmlCompat.fromHtml(item.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
     }
 

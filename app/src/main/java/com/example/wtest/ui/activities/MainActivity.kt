@@ -15,6 +15,7 @@ import com.example.wtest.ui.viewmodels.MainActivityViewModel
 import com.example.wtest.utils.onQueryTextSubmit
 import org.koin.android.ext.android.inject
 
+
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private var zipcodeAdapter = ZipcodeListAdapter()
@@ -28,6 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         (menu?.findItem(R.id.action_search)?.actionView as? SearchView)?.let { searchView ->
             searchView.onQueryTextSubmit { query ->
                 getPaginatedResults(query)
+                setLoadingTextView()
                 searchView.clearFocus()
             }
         }
@@ -39,6 +41,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         fetchZipcodes()
         setupObservables()
         getPaginatedResults()
+        setupAdapterLoadStateListener()
+    }
+
+    private fun setupAdapterLoadStateListener() {
         zipcodeAdapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) showLoading() else showRecyclerView()
             if (loadState.refresh is LoadState.NotLoading &&
@@ -93,7 +99,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun handleEmptyList() {
         when {
             zipcodeAdapter.itemCount > 0 -> {
-                Toast.makeText(this, "End of results", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.end_of_results), Toast.LENGTH_SHORT).show()
             }
             viewModel.zipCodeLiveData.value == null -> {
                 showLoading()
@@ -102,6 +108,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 showEmptyState()
             }
         }
+    }
+
+    private fun setLoadingTextView() {
+        binding.tvLoading.text = getString(R.string.search_db)
     }
 
     private fun fetchZipcodes() {

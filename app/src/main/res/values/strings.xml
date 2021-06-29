@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WTest</string>
+    <string name="search_db">Searching database. Please wait.</string>
+    <string name="search_api">Fetching api. Please wait.</string>
+    <string name="end_of_results">End of results</string>
+    <string name="no_results">No result found. Try again.</string>
 </resources>

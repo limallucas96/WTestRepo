@@ -13,10 +13,6 @@ val webServiceModules = module {
     single { WebServiceClient().create() }
 }
 
-val dataSourceModules = module {
-//    single { FlickerApiDataSource(get()) }
-}
-
 val repositoryModules = module {
     single { MainRepository(get(), get()) }
 }
@@ -35,7 +31,6 @@ val databaseModules = module {
 
 val applicationModules = listOf(
     webServiceModules,
-    dataSourceModules,
     repositoryModules,
     viewModelModules,
     databaseModules
