@@ -19,7 +19,7 @@ interface ZipcodeDataSource {
     @Query("SELECT * FROM zipcode_entity")
     suspend fun getZipcodes(): List<Zipcode>
 
-    @Query("SELECT * FROM zipcode_entity WHERE toSearchFull LIKE '%' || :query || '%' OR toSearchExtZipcode LIKE '%' || :query || '%' OR toSearchZipcode LIKE '%' || :query || '%'")
+    @Query("SELECT * FROM zipcode_entity WHERE toSearchFull LIKE '%' || :query || '%' OR toSearchExtZipcode LIKE '%' || :query || '%' OR toSearchZipcode LIKE '%' || :query || '%' OR toNameExtZipcode LIKE '%' || :query || '%' OR toNameSearchZipcode LIKE '%' || :query || '%' OR toNameSearchZipcode LIKE '%' || :query || '%'")
     suspend fun getZipcodesLike(query: String): List<Zipcode>
 
 }
