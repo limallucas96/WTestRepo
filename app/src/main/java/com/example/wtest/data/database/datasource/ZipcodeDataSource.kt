@@ -16,10 +16,10 @@ interface ZipcodeDataSource {
     @Query("SELECT * FROM zipcode_entity ORDER BY id LIMIT 1")
     suspend fun checkDatabase(): List<Zipcode>
 
-    @Query("SELECT * FROM zipcode_entity")
-    suspend fun getZipcodes(): List<Zipcode>
+    @Query("SELECT * FROM zipcode_entity LIMIT :limit OFFSET :offset")
+    suspend fun getZipcodes(limit: Int, offset: Int): List<Zipcode>
 
-    @Query("SELECT * FROM zipcode_entity WHERE toSearchFull LIKE '%' || :query || '%' OR toSearchExtZipcode LIKE '%' || :query || '%' OR toSearchZipcode LIKE '%' || :query || '%' OR toNameExtZipcode LIKE '%' || :query || '%' OR toNameSearchZipcode LIKE '%' || :query || '%' OR toNameSearchZipcode LIKE '%' || :query || '%'")
-    suspend fun getZipcodesLike(query: String): List<Zipcode>
+    @Query("SELECT * FROM zipcode_entity WHERE toSearchFull LIKE '%' || :query || '%' OR toSearchExtZipcode LIKE '%' || :query || '%' OR toSearchZipcode LIKE '%' || :query || '%' OR toNameExtZipcode LIKE '%' || :query || '%' OR toNameSearchZipcode LIKE '%' || :query || '%' OR toNameSearchZipcode LIKE '%' || :query || '%' LIMIT :limit OFFSET :offset")
+    suspend fun getZipcodesLike(limit: Int, offset: Int, query: String): List<Zipcode>
 
 }

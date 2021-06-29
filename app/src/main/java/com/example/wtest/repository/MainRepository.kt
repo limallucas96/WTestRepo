@@ -9,6 +9,13 @@ import java.io.InputStreamReader
 
 class MainRepository(private val ws: WebService, private val db: AppDataBase) {
 
+    /**
+     * TODO:
+     *  1. Handle/Treat exceptions
+     *  2. Check if has downloaded all content/lines from csv
+     *  3. Create mechanism to show download progress
+     */
+
     suspend fun getZipCode(): Boolean {
         val zipCodes = db.zipcodeDataSource().checkDatabase()
         return if (zipCodes.isNotEmpty()) {
@@ -34,8 +41,9 @@ class MainRepository(private val ws: WebService, private val db: AppDataBase) {
         }
     }
 
-    suspend fun getZipcodes() = db.zipcodeDataSource().getZipcodes()
+    suspend fun getZipcodes(limit: Int, offset: Int) = db.zipcodeDataSource().getZipcodes(limit, offset)
 
-    suspend fun getZipcodesLike(query: String) = db.zipcodeDataSource().getZipcodesLike(query)
+    suspend fun getZipcodesLike(limit: Int, offset: Int, query: String) =
+        db.zipcodeDataSource().getZipcodesLike(limit, offset, query)
 
 }

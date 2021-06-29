@@ -20,9 +20,7 @@ class ZipcodeListAdapter() :
     }
 
     override fun onBindViewHolder(holder: ZipcodeViewHolder, position: Int) {
-        getItem(position)?.let {
-            holder.bind(it)
-        }
+        getItem(position)?.let { holder.bind(it) }
     }
 
     inner class ZipcodeViewHolder(private val binding: ItemZipcodeViewHolderBinding) :
@@ -36,12 +34,9 @@ class ZipcodeListAdapter() :
     companion object {
         private val ZIPCODE_DIFF = object : DiffUtil.ItemCallback<Zipcode>() {
 
-            override fun areItemsTheSame(oldItem: Zipcode, newItem: Zipcode) =
-                oldItem.id == newItem.id
+            override fun areItemsTheSame(oldItem: Zipcode, newItem: Zipcode) = oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Zipcode, newItem: Zipcode) =
-                oldItem == newItem
-
+            override fun areContentsTheSame(oldItem: Zipcode, newItem: Zipcode) = oldItem == newItem
         }
     }
 }
