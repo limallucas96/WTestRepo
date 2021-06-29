@@ -74,6 +74,7 @@ object ZipcodeValues {
 
 private fun List<String>.getOrEmpty(index: Int) = getOrNull(index).orEmpty()
 
+//Converts splitted string into ZipCode object
 fun List<String>.toZipcode(): Zipcode {
     return Zipcode(
         districtCode = this.getOrEmpty(DISTRICT_CODE),

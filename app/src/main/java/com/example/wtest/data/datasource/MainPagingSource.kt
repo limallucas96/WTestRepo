@@ -1,8 +1,8 @@
 package com.example.wtest.data.datasource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.wtest.AppApplication.Companion.doLog
 import com.example.wtest.data.entities.Zipcode
 import com.example.wtest.repository.MainRepository
 import kotlinx.coroutines.delay
@@ -26,7 +26,7 @@ class MainPagingSource(private val query: String, private val repository: MainRe
 
         val nextKey = if (result.isEmpty()) null else currentPage + 1
 
-        Log.d("..", "limitPerPage $limitPerPage offSet $offSet dataSize ${result.size} nextKey $nextKey")
+        doLog("limitPerPage $limitPerPage offSet $offSet dataSize ${result.size} nextKey $nextKey")
 
         return LoadResult.Page(
             data = result,

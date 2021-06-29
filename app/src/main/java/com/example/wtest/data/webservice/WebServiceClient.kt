@@ -1,15 +1,11 @@
 package com.example.wtest.data.webservice
 
-import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.jackson.JacksonConverterFactory
 
 class WebServiceClient {
-
-    private val gson = GsonBuilder().setLenient().create()
 
     fun create(): WebService {
         val logger = HttpLoggingInterceptor()

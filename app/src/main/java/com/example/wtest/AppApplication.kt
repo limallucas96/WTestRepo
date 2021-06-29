@@ -1,6 +1,7 @@
 package com.example.wtest
 
 import android.app.Application
+import android.util.Log
 import com.example.wtest.di.applicationModules
 import com.facebook.stetho.Stetho
 import org.koin.android.ext.koin.androidContext
@@ -22,6 +23,13 @@ class AppApplication : Application() {
         startKoin {
             androidContext(this@AppApplication)
             modules(applicationModules)
+        }
+    }
+
+    companion object {
+        private const val APP_TAG = "WTestApplication"
+        fun Any.doLog(message: String) {
+            Log.d("$APP_TAG ${this.javaClass.simpleName}", message)
         }
     }
 

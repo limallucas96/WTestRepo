@@ -45,6 +45,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun setupAdapterLoadStateListener() {
+        binding.rvRecyclerView.adapter = zipcodeAdapter.withLoadStateFooter(ListLoadStateAdapter())
         zipcodeAdapter.addLoadStateListener { loadState ->
             if (loadState.refresh is LoadState.Loading) showLoading() else showRecyclerView()
             if (loadState.refresh is LoadState.NotLoading &&
@@ -67,7 +68,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun handleZipcodeResult(didLoad: Boolean) {
         if (didLoad) {
-            binding.rvRecyclerView.adapter = zipcodeAdapter.withLoadStateFooter(ListLoadStateAdapter())
             showRecyclerView()
         }
     }
